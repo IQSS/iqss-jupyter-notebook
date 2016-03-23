@@ -7,7 +7,7 @@ import stat
 
 #--- nbextensions configuration ---
 import sys
-sys.path.append('/usr/local/share/jupyter/extensions')
+sys.path.append('/home/jovyan/.local/share/jupyter/extensions')
 #--- nbextensions configuration ---
 
 PEM_FILE = os.path.join(jupyter_data_dir(), 'notebook.pem')

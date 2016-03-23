@@ -81,15 +81,16 @@ RUN pacman -S --noconfirm \
 # Install R packages
 
 RUN Rscript -e "install.packages(c('directlabels', 'rgl', 'rglwidget', 'ggplot2', 'ggmap', 'ggrepel', 'rvest', 'forecast', 'effects', 'stringi', 'rio'), repos = 'https://cloud.r-project.org')" && \
-    Rscript -e "install.packages(c('rzmq','repr','IRkernel','IRdisplay'), repos = c('http://irkernel.github.io/', 'http://cran.rstudio.com'),type = 'source')" && \
-    Rscript -e "IRkernel::installspec(user = FALSE)"
+    Rscript -e "install.packages(c('rzmq','repr','IRkernel','IRdisplay'), repos = c('http://irkernel.github.io/', 'http://cran.rstudio.com'),type = 'source')"
 
 # Create jovyan user with UID=1000
 RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER
 
 USER jovyan
-# Install IJulia as user jovyan
-RUN julia -e 'Pkg.add("IJulia")'
+# Install extra kernels and nbextensions as user jovyan
+RUN julia -e 'Pkg.add("IJulia")' && \
+Rscript -e "IRkernel::installspec()" && \
+pip install https://github.com/ipython-contrib/IPython-notebook-extensions/archive/master.zip --user
 
 # Set up Rprofile
 COPY .Rprofile /home/$NB_USER/
@@ -109,8 +110,6 @@ RUN gpg --keyserver pgp.mit.edu --recv-keys 456032D717A4CD9C && \
     cd tini && \
     makepkg
 
-RUN pip install https://github.com/ipython-contrib/IPython-notebook-extensions/archive/master.zip --user
- 
 USER root
 # install tini
 RUN cd /tmp/tini && \
@@ -125,7 +124,7 @@ ENTRYPOINT ["tini", "--"]
 CMD ["start-notebook.sh"]
 
 # Add local files as late as possible to avoid cache busting
-# COPY jupyter_notebook_config.py /home/$NB_USER/.jupyter/
+COPY jupyter_notebook_config.py /home/$NB_USER/.jupyter/
 COPY start-notebook.sh /usr/local/bin/
 RUN chown -R $NB_USER:users /home/$NB_USER/
 
