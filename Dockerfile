@@ -79,8 +79,7 @@ RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER
 USER jovyan
 # Install extra kernels and nbextensions as user jovyan
 RUN julia -e 'Pkg.add("IJulia")' && \
-    Rscript -e "IRkernel::installspec()" && \
-    pip install https://github.com/ipython-contrib/IPython-notebook-extensions/archive/master.zip --user
+    Rscript -e "IRkernel::installspec()"
 
 # Set up Rprofile
 COPY .Rprofile /home/$NB_USER/
@@ -88,7 +87,6 @@ COPY .Rprofile /home/$NB_USER/
 # Set up jupyter config
 RUN mkdir -p /home/$NB_USER/.jupyter/nbconfig
 COPY jupyter_notebook_config.py /home/$NB_USER/.jupyter/
-COPY notebook.json /home/$NB_USER/.jupyter/nbconfig
 
 # Sync workshop archives
 RUN mkdir /home/$NB_USER/work && \
