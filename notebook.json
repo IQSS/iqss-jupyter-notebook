@@ -1,0 +1,9 @@
+{
+  "load_extensions": {
+    "usability/search-replace/main": true,
+    "styling/table_beautifier/main": true,
+    "usability/help_panel/help_panel": true,
+    "usability/toc2/main": true,
+    "config/config_menu/main": true
+  }
+}
