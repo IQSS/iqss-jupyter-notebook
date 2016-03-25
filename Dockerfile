@@ -24,6 +24,7 @@ RUN pacman -S --noconfirm \
     gcc-fortran \
     cmake \
     git \
+    glu \
     zeromq \
     curl \
     openssl \
@@ -41,7 +42,7 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 
 # Install R, Julia
-RUN pacman -S --noconfirm r julia && \
+RUN pacman -S --noconfirm r julia octave gnuplot && \
     pacman -Scc --noconfirm
 
 # Install jupyter stuff
@@ -50,42 +51,50 @@ RUN pacman -S --noconfirm \
     python2 \
     ipython2-notebook \
     jupyter-notebook \
-    python-crypto \
-    python2-crypto \
     python-pip \
-    python2-pip && \
-    pip install bash_kernel && \
-    python -m bash_kernel.install && \
-    pacman -Scc --noconfirm
+    python2-pip  && \
+    pacman -Scc --noconfirm && \
+    pip install bash_kernel octave_kernel &&\
+    python -m octave_kernel.install && \
+    python -m bash_kernel.install
 
 # install python packages
 RUN pacman -S --noconfirm \
     python-matplotlib \
     python-numpy \
     python-pandas \
+    python-crypto \
     python2-matplotlib \
     python2-numpy \
-    python2-pandas && \
+    python2-pandas \
+    python2-crypto && \
     pacman -Scc --noconfirm
-
-# Install R packages
-
-RUN Rscript -e "install.packages(c('directlabels', 'ggplot2', 'ggmap', 'ggrepel', 'rvest', 'forecast', 'effects', 'stringi', 'rio'), repos = 'https://cloud.r-project.org')" && \
-    Rscript -e "install.packages(c('rzmq','repr','IRkernel','IRdisplay'), repos = c('http://irkernel.github.io/', 'http://cran.rstudio.com'),type = 'source')"
 
 # Create jovyan user with UID=1000
 RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER
 
 USER jovyan
-# Install extra kernels and nbextensions as user jovyan
-RUN julia -e 'Pkg.add("IJulia")' && \
-    Rscript -e "IRkernel::installspec()"
 
-# Set up Rprofile
+# Install julia packages
+RUN julia -e 'Pkg.add("IJulia")' && \
+    julia -e 'Pkg.add("DataFrames")' && \
+    juilia -e 'Pkg.add("Gadfly")' && \
+    julia -e 'Pkg.update()'
+
+# Install R packages
 COPY .Rprofile /home/$NB_USER/
 
+RUN cd /home/$NB_USER && \
+    mkdir R && \
+    Rscript -e "install.packages(c('directlabels', 'rgl', 'rglwidget', 'ggplot2', 'ggmap', 'ggrepel', 'rvest', 'forecast', 'effects', 'stringi', 'rio'), repos = 'https://cloud.r-project.org')" && \
+    Rscript -e "update.packages(ask = FALSE, repos = 'https://cloud.r-project.org')" && \
+    Rscript -e "install.packages(c('rzmq','repr','IRkernel','IRdisplay'), repos = c('http://irkernel.github.io/', 'http://cran.rstudio.com'),type = 'source')" && \
+     Rscript -e "IRkernel::installspec()"
+
 # Set up jupyter config
-RUN mkdir -p /home/$NB_USER/.jupyter/nbconfig
+RUN mkdir -p /home/$NB_USER/.jupyter/nbconfig && \
+    pip install https://github.com/ipython-contrib/IPython-notebook-extensions/archive/master.zip --user
+
 COPY jupyter_notebook_config.py /home/$NB_USER/.jupyter/
 
 # Sync workshop archives
