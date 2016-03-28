@@ -76,8 +76,8 @@ RUN apt-get install -y --no-install-recommends --fix-missing \
     python3-dev
 
 # install python packages
-RUN pip3 install pexpect pickleshare simplegeneric zmq pandas jupyter ipykernel matplotlib numpy crypto octave_kernel bash_kernel && \
-    pip install pexpect pickleshare simplegeneric zmq pandas matplotlib numpy crypto ipykernel octave_kernel && \
+RUN pip3 install pexpect pickleshare simplegeneric zmq pandas jupyter ipykernel matplotlib numpy pycrypto octave_kernel bash_kernel && \
+    pip install pexpect pickleshare simplegeneric zmq pandas matplotlib numpy pycrypto ipykernel octave_kernel && \
     python3 -m octave_kernel.install && \
     python3 -m bash_kernel.install && \
     python2 -m ipykernel install && \
