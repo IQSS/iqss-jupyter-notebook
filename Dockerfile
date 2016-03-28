@@ -1,39 +1,14 @@
 # Copyright (c) Harvard University.
 # Distributed under the terms of the Modified BSD License.
 
-# Arch Linux
-FROM base/archlinux
+# Debian testing image
+FROM debian:testing
 MAINTAINER Ista Zahn <izahn@g.harvard.edu>
 
-RUN curl -o /etc/pacman.d/mirrorlist "https://www.archlinux.org/mirrorlist/?country=all&protocol=https&ip_version=6&use_mirror_status=on" && \
-  sed -i 's/^#//' /etc/pacman.d/mirrorlist
-
-RUN pacman-key --populate && \
-  pacman-key --refresh-keys && \
-  pacman -Sy --noprogressbar --noconfirm && \
-  pacman-db-upgrade && \
-  pacman -Syyuu --noprogressbar --noconfirm && \
-  pacman-db-upgrade && \
-  pacman -Suu --noprogressbar --noconfirm && \
-  pacman -Rs --noconfirm $(pacman -Qqdt) && \
-  pacman -Scc --noprogressbar --noconfirm
-
-# Install build stuff
-RUN pacman -S --noconfirm \
-    base-devel \
-    gcc-fortran \
-    cmake \
-    git \
-    glu \
-    zeromq \
-    curl \
-    openssl \
-    ttf-dejavu \
-    icu \
-    ed && \
-    pacman -Scc --noconfirm
+# Install all OS dependencies for fully functional notebook server
 
 # Configure environment
+ENV DEBIAN_FRONTEND noninteractive
 ENV SHELL /bin/bash
 ENV NB_USER jovyan
 ENV NB_UID 1000
@@ -41,34 +16,72 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 
+RUN apt-get update && apt-get upgrade -y
+
+# Install build stuff
+RUN apt-get install -y --no-install-recommends --fix-missing \
+    ed \
+    git \
+    wget \
+    build-essential \
+    libzmq3 \
+    libzmq3-dev \
+    ca-certificates \
+    bzip2 \
+    unzip \
+    libsm6 \
+    sudo \
+    locales \
+    fonts-dejavu \
+    gfortran \
+    gcc \
+    libav-tools \
+    libgl1-mesa-glx \
+    libglu1 \
+    libpng12-0\
+    libgl1-mesa-dev \
+    libglu-dev \
+    libpng-dev \
+    libx11-dev \
+    pkgconf \
+    libfreetype6 \
+    libfreetype6-dev \
+    cdbs \
+    autotools-dev \
+    libxml2 \
+    zlib1g \
+    libxml2-dev \
+    libcurl3 \
+    libcurl4-openssl-dev \
+    icu-devtools \
+    libicu-dev \
+    libicu55 \
+    libssl-dev
+
+RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
+    locale-gen
+
+
 # Install R, Julia
-RUN pacman -S --noconfirm r julia octave gnuplot && \
-    pacman -Scc --noconfirm
+RUN apt-get install -y --no-install-recommends --fix-missing r-base r-base-dev julia octave gnuplot
 
 # Install jupyter stuff
-RUN pacman -S --noconfirm \
+
+RUN apt-get install -y --no-install-recommends --fix-missing \
     python \
-    python2 \
-    ipython2-notebook \
-    jupyter-notebook \
-    python-pip \
-    python2-pip  && \
-    pacman -Scc --noconfirm && \
-    pip install bash_kernel octave_kernel &&\
-    python -m octave_kernel.install && \
-    python -m bash_kernel.install
+    python3 \
+    python-pip\
+    python3-pip \
+    python-dev \
+    python3-dev
 
 # install python packages
-RUN pacman -S --noconfirm \
-    python-matplotlib \
-    python-numpy \
-    python-pandas \
-    python-crypto \
-    python2-matplotlib \
-    python2-numpy \
-    python2-pandas \
-    python2-crypto && \
-    pacman -Scc --noconfirm
+RUN pip3 install pexpect pickleshare simplegeneric zmq pandas jupyter ipykernel matplotlib numpy crypto octave_kernel bash_kernel && \
+    pip install pexpect pickleshare simplegeneric zmq pandas matplotlib numpy crypto ipykernel octave_kernel && \
+    python3 -m octave_kernel.install && \
+    python3 -m bash_kernel.install && \
+    python2 -m ipykernel install && \
+    python3 -m ipykernel install
 
 # Create jovyan user with UID=1000
 RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER
@@ -91,7 +104,7 @@ RUN cd /home/$NB_USER && \
      Rscript -e "IRkernel::installspec()"
 
 # Set up jupyter config
-RUN pip install https://github.com/ipython-contrib/IPython-notebook-extensions/archive/master.zip --user && \
+RUN pip3 install https://github.com/ipython-contrib/IPython-notebook-extensions/archive/master.zip --user && \
     mkdir -p /home/$NB_USER/.jupyter/nbconfig
 COPY notebook.json /home/$NB_USER/.jupyter/nbconfig/
 COPY jupyter_notebook_config.py /home/$NB_USER/.jupyter/
@@ -104,19 +117,12 @@ RUN mkdir /home/$NB_USER/work && \
     git clone --depth 1 https://github.com/kareemcarr/IntroductionToPythonWorkshop.git && \
     git clone --depth 1 https://github.com/kareemcarr/IntermediatePython.git
 
-# build tini
-RUN gpg --keyserver pgp.mit.edu --recv-keys 456032D717A4CD9C && \
-    cd /tmp && \
-    git clone https://aur.archlinux.org/tini.git && \
-    cd tini && \
-    makepkg
-
 USER root
-# install tini
-RUN cd /tmp/tini && \
-    pacman -U --noconfirm tini*.tar.xz && \
-    cd /tmp && \
-    rm -rf tini
+# Install Tini
+RUN wget --quiet https://github.com/krallin/tini/releases/download/v0.9.0/tini && \
+    echo "faafbfb5b079303691a939a747d7f60591f2143164093727e870b289a44d9872 *tini" | sha256sum -c - && \
+    mv tini /usr/local/bin/tini && \
+    chmod +x /usr/local/bin/tini
 
 # Configure container startup as root
 EXPOSE 8888
@@ -131,7 +137,8 @@ RUN chown -R $NB_USER:users /home/$NB_USER/
 COPY start-notebook.sh /usr/local/bin/
 
 # Cleanup
-RUN pacman --noconfirm -Scc && \
+RUN apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/* && \
     rm -rf /var/log/journal/* && \
     rm -rf /var/cache/pacman/pkg/* && \
     rm -rf /tmp/*
