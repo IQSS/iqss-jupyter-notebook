@@ -2,7 +2,7 @@
 # Distributed under the terms of the Modified BSD License.
 
 # Arch Linux
-FROM base/archlinux
+FROM archlinux
 MAINTAINER Ista Zahn <izahn@g.harvard.edu>
 
 RUN curl -o /etc/pacman.d/mirrorlist "https://www.archlinux.org/mirrorlist/?country=all&protocol=https&ip_version=6&use_mirror_status=on" && \
@@ -51,6 +51,8 @@ RUN pacman -S --noconfirm \
     python2 \
     ipython2-notebook \
     jupyter-notebook \
+    python-yaml \
+    python2-yaml \
     python-pip \
     python2-pip  && \
     pacman -Scc --noconfirm && \
