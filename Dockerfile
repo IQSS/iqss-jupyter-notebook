@@ -78,23 +78,22 @@ USER jovyan
 # Install julia packages
 RUN julia -e 'Pkg.add("IJulia")' && \
     julia -e 'Pkg.add("DataFrames")' && \
-    juilia -e 'Pkg.add("Gadfly")' && \
+    julia -e 'Pkg.add("Gadfly")' && \
     julia -e 'Pkg.update()'
 
 # Install R packages
 COPY .Rprofile /home/$NB_USER/
-
 RUN cd /home/$NB_USER && \
     mkdir R && \
     Rscript -e "install.packages(c('directlabels', 'rgl', 'rglwidget', 'ggplot2', 'ggmap', 'ggrepel', 'rvest', 'forecast', 'effects', 'stringi', 'rio'), repos = 'https://cloud.r-project.org')" && \
-    Rscript -e "update.packages(ask = FALSE, repos = 'https://cloud.r-project.org')" && \
+    Rscript -e "update.packages(lib.loc = '~/R', ask = FALSE, repos = 'https://cloud.r-project.org')" && \
     Rscript -e "install.packages(c('rzmq','repr','IRkernel','IRdisplay'), repos = c('http://irkernel.github.io/', 'http://cran.rstudio.com'),type = 'source')" && \
      Rscript -e "IRkernel::installspec()"
 
 # Set up jupyter config
-RUN mkdir -p /home/$NB_USER/.jupyter/nbconfig && \
-    pip install https://github.com/ipython-contrib/IPython-notebook-extensions/archive/master.zip --user
-
+RUN pip install https://github.com/ipython-contrib/IPython-notebook-extensions/archive/master.zip --user && \
+    mkdir -p /home/$NB_USER/.jupyter/nbconfig
+COPY notebook.json /home/$NB_USER/.jupyter/nbconfig/
 COPY jupyter_notebook_config.py /home/$NB_USER/.jupyter/
 
 # Sync workshop archives
