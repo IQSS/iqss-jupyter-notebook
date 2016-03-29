@@ -4,10 +4,6 @@
 # Arch Linux
 FROM archlinux
 MAINTAINER Ista Zahn <izahn@g.harvard.edu>
-
-RUN curl -o /etc/pacman.d/mirrorlist "https://www.archlinux.org/mirrorlist/?country=all&protocol=https&ip_version=6&use_mirror_status=on" && \
-  sed -i 's/^#//' /etc/pacman.d/mirrorlist
-
 RUN pacman-key --populate && \
   pacman-key --refresh-keys && \
   pacman -Sy --noprogressbar --noconfirm && \
@@ -15,7 +11,7 @@ RUN pacman-key --populate && \
   pacman -Syyuu --noprogressbar --noconfirm && \
   pacman-db-upgrade && \
   pacman -Suu --noprogressbar --noconfirm && \
-  pacman -Rs --noconfirm $(pacman -Qqdt) && \
+  if pacman -Qqdt; then   pacman -Rs --noconfirm $(pacman -Qqdt); fi && \
   pacman -Scc --noprogressbar --noconfirm
 
 # Install build stuff
