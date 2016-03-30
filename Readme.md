@@ -12,7 +12,7 @@ System requirements
 -------------------
 [docker](http://docker.com) and an open port 8000 are required. [Archlinux](http://archlinux.org) is optionally required if you want to build the docker images yourself (details below).
 
-I actually don't know what the minimum system memory/CPU/disk requirements are. It obviously depends in part on how many people are expected to use the system at any given time. I've tested 10 co currrent connections on a system with 8 Gb of memory and 4 CPUs and it seemed to work fine. As a wild guess I would say that around 20 Gb of disk space may be required.
+I actually don't know what the minimum system memory/CPU/disk requirements are. It obviously depends in part on how many people are expected to use the system at any given time. I've tested 10 concurrrent connections on a system with 8 Gb of memory and 4 CPUs and it seemed to work fine. As a wild guess I would say that around 20 Gb of disk space may be required.
 
 
 Building and deploying
@@ -34,5 +34,4 @@ Build and deploy docker images running jupyter
 ----------------------------------------------
 
 Once you have aquired an Archlinux docker image building the image with everything needed to run DSS workshops is easy. Install docker and git, clone this repository and `cd` to it, and build the image with `docker build -t iqss-jupyter-notebook .` Once the image finishes building you can start the service by running the included `start-tmpnb` script.
-
 
