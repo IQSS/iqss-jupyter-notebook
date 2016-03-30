@@ -14,6 +14,10 @@ System requirements
 
 I actually don't know what the minimum system memory/CPU/disk requirements are. It obviously depends in part on how many people are expected to use the system at any given time. I've tested 10 concurrrent connections on a system with 8 Gb of memory and 4 CPUs and it seemed to work fine. As a wild guess I would say that around 20 Gb of disk space may be required.
 
+Quickstart
+==========
+
+You can deploy this service easily using docker images that I have pre-built. Simply clone this repository, download the docker image from [http://izahn.crabdance.com/iqss-jupyter-notebook.tar](http://izahn.crabdance.com/iqss-jupyter-notebook.tar), load it with `docker load --input archlinux.tar`, and start the service by running the included `start-tmpnb.sh` script. You can stop reading here unless you want to build the images yourself.
 
 Building and deploying
 ======================
@@ -24,8 +28,8 @@ Acquiring an Archlinux docker image
 -----------------------------------
 The first step is to build or otherwise aquire an Archlinux docker image. There are at least two approaches. 
 
+I have built an Archlinux docker image that you can download from [http://izahn.crabdance.com/archlinux..tar](http://izahn.crabdance.com/archlinux.tar). You can load this image into docker using `docker load`.
 
-I have built an Archlinux docker image that you can download from [http://izahn.crabdance.com/iqss-jupyter-notebook.tar](http://izahn.crabdance.com/iqss-jupyter-notebook.tar). You can load this image into docker using `docker load`.
 If you want to build the Archlinux image yourself you can do so using the [build script provided by docker](https://github.com/docker/docker/tree/master/contrib). I have included copies the reqiured files in this repository for conveniance. This is the approach I recommend because it avoids relying on unoffficial docker images, and because it produces a clean and up-to-date base on which to build. The downside is that you need an Archlinux system on which to build the image. If you don't already have an Archlinux installition, install Arch following the [Beginners guide](https://wiki.archlinux.org/index.php/Beginners%27_guide). Then install docker and the build scripts with `pacman -S base-devel git docker arch-install-scripts`. Finally, clone this repository and run 
 ```
 cp /etc/pacman.conf ./mkimage-arch-pacman.conf # or get a pacman.conf from somewhere else 
