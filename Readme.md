@@ -17,7 +17,7 @@ I actually don't know what the minimum system memory/CPU/disk requirements are. 
 Quick start
 ==========
 
-You can deploy this service easily using docker images that I have pre-built. Simply clone this repository, download the docker image from [http://izahn.crabdance.com/iqss-jupyter-notebook.tar](http://izahn.crabdance.com/iqss-jupyter-notebook.tar) (md5sum: `2264c1f77f2a9f19514c11b1a96ce0d9`), load it with `docker load --input archlinux.tar`, and start the service by running the included `start-tmpnb.sh` script.
+You can deploy this service easily using docker images that I have pre-built. Simply clone this repository, download the docker image from [http://izahn.crabdance.com/iqss-jupyter-notebook.tar](http://izahn.crabdance.com/iqss-jupyter-notebook.tar) (md5sum: `2264c1f77f2a9f19514c11b1a96ce0d9`), load it with `docker load --input iqss-jupyter-notebook.tar`, and start the service by running the included `start-tmpnb.sh` script.
 
 You can stop reading here unless you want to build the images yourself.
 
