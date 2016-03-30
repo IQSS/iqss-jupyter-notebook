@@ -18,9 +18,7 @@ The first steo is to build or otherwise aquire an Archlinux docker image. There 
 
 You can build an archlinux docker image using the [build script provided by docker](https://github.com/docker/docker/tree/master/contrib). I have included copies the reqiured files in this repository for conveniance. This is the approach I recommend because it avoids relying on unoffficial docker images, and because it produces a clean and up-to-date base on which to build. The downside is that you need an Archlinux system on which to build the image. If you don't already have an Archlinux installition, install Arch following the [Beginners guid](https://wiki.archlinux.org/index.php/Beginners%27_guide). Then install docker and the build scripts with `pacman -S base-devel git docker arch-install-scripts`. Finally, clone this repository and run the `mkimage-arch.sh` script to build the image. 
 
-If this all sounds like too much work you can also contact me and I can build an image for you.
-
-
+If this all sounds like too much work you can just download an image that I built from [http://izahn.crabdance.com/iqss-jupyter-notebook.tar](http://izahn.crabdance.com/iqss-jupyter-notebook.tar). You can load this image into docker using `docker load`.
 Alterntatively you can use the unofficial image (`docker pull base/archlinux`) and change `FROM archlinux` to `FROM base/archlinux` in the `Dockerfile`. This is easy but requires relying on the unoffficial `base/archlinux` docker image. It is also somewhat less than ideal because `base/archlinux` is not frequently updated.
 
 Build and deploy docker images running jupyter
