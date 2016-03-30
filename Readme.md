@@ -23,6 +23,9 @@ If this all sounds like too much work you can also contact me and I can build an
 
 Alterntatively you can use the unofficial image (`docker pull base/archlinux`) and change `FROM archlinux` to `FROM base/archlinux` in the `Dockerfile`. This is easy but requires relying on the unoffficial `base/archlinux` docker image. It is also somewhat less than ideal because `base/archlinux` is not frequently updated.
 
+Build and deploy docker images running jupyter
+----------------------------------------------
+
 Once you have aquired an Archlinux docker image building the image with everything needed to run DSS workshops is easy. Install docker and git, clone this repository and `cd` to it, and build the image with `docker build -t iqss-jupyter-notebook .` Once the image finishes building you can start the service by running the included `start-tmpnb` script.
 
 
