@@ -17,7 +17,7 @@ I actually don't know what the minimum system memory/CPU/disk requirements are. 
 Quick start
 ==========
 
-You can deploy this service easily using docker images that I have pre-built. Simply clone this repository, download the docker image from [http://izahn.crabdance.com/iqss-jupyter-notebook.tar](http://izahn.crabdance.com/iqss-jupyter-notebook.tar) (md5sum: `2264c1f77f2a9f19514c11b1a96ce0d9`), load it with `docker load --input iqss-jupyter-notebook.tar`, and start the service by running the included `start-tmpnb.sh` script. Note that the image is about 3 Gb, so loading it into docker is expected to be slow. The `start-tmpnb.sh` script will pull and run additional [docker images from the Jupyter project](https://github.com/jupyter/docker-stacks) and start Jupyter notebook services running on port 8000.
+You can deploy this service easily using docker images that I have pre-built. Simply clone this repository, download the docker image from [http://izahn.crabdance.com/iqss-jupyter-notebook.tar](http://izahn.crabdance.com/iqss-jupyter-notebook.tar) (md5sum: `a7990c8e967b04dbf90e52fdc0013716`), load it with `docker load --input iqss-jupyter-notebook.tar`, and start the service by running the included `start-tmpnb.sh` script. Note that the image is about 3 Gb, so loading it into docker is expected to be slow. The `start-tmpnb.sh` script will pull and run additional [docker images from the Jupyter project](https://github.com/jupyter/docker-stacks) and start Jupyter notebook services running on port 8000.
 
 You can stop reading here unless you want to build the images yourself.
 
