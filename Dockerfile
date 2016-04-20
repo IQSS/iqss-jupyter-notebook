@@ -26,6 +26,7 @@ RUN pacman -S --noconfirm \
     openssl \
     ttf-dejavu \
     icu \
+    pandoc \
     ed && \
     pacman -Scc --noconfirm
 
@@ -90,9 +91,12 @@ RUN cd /home/$NB_USER && \
 
 # Set up jupyter config
 RUN pip install https://github.com/ipython-contrib/IPython-notebook-extensions/archive/master.zip --user && \
-    mkdir -p /home/$NB_USER/.jupyter/nbconfig
+    mkdir -p /home/$NB_USER/.jupyter/nbconfig && \
+    mkdir -p /home/$NB_USER/.jupyter/custom 
 COPY notebook.json /home/$NB_USER/.jupyter/nbconfig/
 COPY jupyter_notebook_config.py /home/$NB_USER/.jupyter/
+COPY custom.css /home/$NB_USER/.jupyter/custom/
+COPY logo.png /home/$NB_USER/.jupyter/custom/
 
 # Sync workshop archives
 RUN mkdir /home/$NB_USER/work && \
