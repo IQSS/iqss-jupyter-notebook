@@ -10,6 +10,7 @@ docker run -d \
     -v /var/run/docker.sock:/docker.sock \
     jupyter/tmpnb \
     python orchestrate.py --image='iqss-jupyter-notebook' \
+        --pool-size=50 \
         --command='start-notebook.sh \
             "--NotebookApp.base_url={base_path} \
             --ip=0.0.0.0 \
