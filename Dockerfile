@@ -48,6 +48,7 @@ RUN pacman -S --noconfirm \
     python2 \
     ipython2-notebook \
     jupyter-notebook \
+    jupyter-nbconvert \
     python-yaml \
     python2-yaml \
     python-pip \
