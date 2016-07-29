@@ -10,7 +10,9 @@ sudo docker run -d \
     -v /var/run/docker.sock:/docker.sock \
     jupyter/tmpnb \
     python orchestrate.py --image='iqss-jupyter-notebook' \
-        --pool-size=50 \
+        --pool-size=30 \
+        --cpu-quota=25000 \
+        --mem-limit=1024m \
         --command='start-notebook.sh \
             "--NotebookApp.base_url={base_path} \
             --ip=0.0.0.0 \
