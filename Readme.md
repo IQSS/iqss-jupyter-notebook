@@ -17,7 +17,7 @@ I actually don't know what the minimum system memory/CPU/disk requirements are. 
 Quick start
 ==========
 
-You can deploy this service easily using docker images that I have pre-built. Simply clone this repository, download the docker image from [https://dss.izahn.com//ista/iqss-jupyter-notebook.tar](https://dss.izahn.com//ista/iqss-jupyter-notebook.tar) (md5sum: `5467b12a72d89e2245108de7103d76eb`), load it with `docker load --input iqss-jupyter-notebook.tar`, and start the service by running the included `start-tmpnb.sh` script. Note that the image is about 3 Gb, so loading it into docker is expected to be slow. The `start-tmpnb.sh` script will pull and run additional [docker images from the Jupyter project](https://github.com/jupyter/docker-stacks) and start Jupyter notebook services running on port 8000.
+You can deploy this service easily using docker images that I have pre-built. Simply clone this repository, download the docker image from [https://dss.izahn.com//ista/iqss-jupyter-notebook.tar](https://dss.izahn.com//ista/iqss-jupyter-notebook.tar) (md5sum: `97ab45131ed97624dec2f8067e371980`), load it with `docker load --input iqss-jupyter-notebook.tar`, and start the service by running the included `start-tmpnb.sh` script. Note that the image is about 3 Gb, so loading it into docker is expected to be slow. The `start-tmpnb.sh` script will pull and run additional [docker images from the Jupyter project](https://github.com/jupyter/docker-stacks) and start Jupyter notebook services running on port 8000.
 
 You can stop reading here unless you want to build the images yourself.
 
@@ -30,7 +30,7 @@ Acquiring an Archlinux docker image
 -----------------------------------
 The first step is to build or otherwise acquire an Archlinux docker image. There are at least two approaches. 
 
-I have built an Archlinux docker image that you can download from [https://dss.izahn.com//ista/archlinux.tar](https://dss.izahn.com//ista/archlinux.tar) (md5sum: `d41d8cd98f00b204e9800998ecf8427e`).  You can load this image into docker using `docker load`.
+I have built an Archlinux docker image that you can download from [https://dss.izahn.com//ista/archlinux.tar](https://dss.izahn.com//ista/archlinux.tar) (md5sum: `2f25fc6036f06629ec3431015b371b7d`).  You can load this image into docker using `docker load`.
 
 If you want to build the Archlinux image yourself you can do so using the [build script provided by docker](https://github.com/docker/docker/tree/master/contrib). I have included copies the required files in this repository for convenience. This is the approach I recommend because it avoids relying on unofficial docker images, and because it produces a clean and up-to-date base on which to build. The downside is that you need an Archlinux system on which to build the image. If you don't already have an Archlinux installation, install Arch following the [Beginners guide](https://wiki.archlinux.org/index.php/Beginners%27_guide). Then install docker and the build scripts with `pacman -S base-devel git docker arch-install-scripts`. Finally, clone this repository and run 
 ```
