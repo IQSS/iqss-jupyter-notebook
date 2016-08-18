@@ -12,3 +12,7 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+
+.materials-no-ipynb {
+	display: none;
+}
