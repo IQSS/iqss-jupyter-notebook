@@ -12,7 +12,7 @@ sudo docker run -d \
     python orchestrate.py --image='iqss-jupyter-notebook' \
         --pool-size=30 \
         --cpu-quota=50000 \
-        --mem-limit=2g \
+        --mem-limit=1g \
         --command='start-notebook.sh \
             "--NotebookApp.base_url={base_path} \
             --ip=0.0.0.0 \
