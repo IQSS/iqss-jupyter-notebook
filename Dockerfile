@@ -85,10 +85,11 @@ RUN julia -e 'Pkg.add("IJulia")' && \
 COPY .Rprofile /home/$NB_USER/
 RUN cd /home/$NB_USER && \
     mkdir R && \
-    Rscript -e "install.packages(c('directlabels', 'rgl', 'rglwidget', 'ggplot2', 'ggmap', 'ggrepel', 'rvest', 'forecast', 'effects', 'stringi', 'rio'), repos = 'https://cloud.r-project.org')" && \
-    Rscript -e "update.packages(lib.loc = '~/R', ask = FALSE, repos = 'https://cloud.r-project.org')" && \
-    Rscript -e "install.packages(c('rzmq','repr','IRkernel','IRdisplay'), repos = c('http://irkernel.github.io/', 'http://cran.rstudio.com'),type = 'source')" && \
-     Rscript -e "IRkernel::installspec()"
+    Rscript -e "install.packages(c('directlabels', 'rgl', 'ggplot2', 'ggmap', 'ggrepel', 'rvest', 'forecast', 'effects', 'stringi', 'rio'), repos = 'https://cloud.r-project.org')" && \
+    Rscript -e "update.packages(lib.loc = .libPaths[1], ask = FALSE, repos = 'https://cloud.r-project.org')" && \
+    Rscript -e "install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'), repos = 'https://cloud.r-project.org')" && \
+    Rscript -e "devtools::install_github('IRkernel/IRkernel')" && \
+    Rscript -e "IRkernel::installspec()"
 
 # Set up jupyter config
 RUN pip install https://github.com/ipython-contrib/IPython-notebook-extensions/archive/master.zip --user && \
