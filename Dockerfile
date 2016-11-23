@@ -16,6 +16,7 @@ RUN pacman-key --populate && \
 
 # Install build stuff
 RUN pacman -S --noconfirm \
+    base \
     base-devel \
     gcc-fortran \
     cmake \
