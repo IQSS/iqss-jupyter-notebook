@@ -16,7 +16,7 @@ RUN pacman-key --populate && \
 
 # Install build stuff
 RUN pacman -S --noconfirm \
-    base \
+    man-db \
     base-devel \
     gcc-fortran \
     cmake \
@@ -28,7 +28,8 @@ RUN pacman -S --noconfirm \
     ttf-dejavu \
     icu \
     pandoc \
-    ed && \
+    ed \
+    vim && \
     pacman -Scc --noconfirm
 
 # Configure environment
