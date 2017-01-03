@@ -17,6 +17,7 @@ sudo docker run -d \
             "--NotebookApp.base_url={base_path} \
             --ip=0.0.0.0 \
             --port={port} \
+	    --NotebookApp.token=\"\" \
             --NotebookApp.trust_xheaders=True"'
 
 
