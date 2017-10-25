@@ -2,17 +2,14 @@
 # Distributed under the terms of the Modified BSD License.
 
 # Arch Linux
-FROM archlinux
+FROM archlinux/base
 MAINTAINER Ista Zahn <izahn@g.harvard.edu>
-RUN pacman-key --populate && \
-  pacman-key --refresh-keys && \
-  pacman -Sy --noprogressbar --noconfirm && \
-  pacman-db-upgrade && \
-  pacman -Syyuu --noprogressbar --noconfirm && \
-  pacman-db-upgrade && \
-  pacman -Suu --noprogressbar --noconfirm && \
-  if pacman -Qqdt; then   pacman -Rs --noconfirm $(pacman -Qqdt); fi && \
-  pacman -Scc --noprogressbar --noconfirm
+RUN pacman-key --init && \
+     pacman -Syy --noprogressbar --noconfirm && \
+     pacman -S archlinux-keyring --noconfirm && \
+     pacman -Syy --noconfirm && \
+     pacman -Suu --noprogressbar --noconfirm && \
+     pacman -Scc --noprogressbar --noconfirm
 
 # Install build stuff
 RUN pacman -S --noconfirm \
@@ -107,7 +104,10 @@ RUN mkdir /home/$NB_USER/work && \
     git clone --depth 1 https://github.com/izahn/workshops.git && \
     cd workshops/Python && \
     git clone --depth 1 https://github.com/kareemcarr/IntroductionToPythonWorkshop.git && \
-    git clone --depth 1 https://github.com/kareemcarr/IntermediatePython.git
+    git clone --depth 1 https://github.com/kareemcarr/IntermediatePython.git && \
+    git clone --depth 1 https://github.com/nmbrodnax/iqss-python-scrape.git && \
+    git clone --depth 1 https://github.com/nmbrodnax/iqss-python-api.git && \
+    git clone --depth 1 https://github.com/nmbrodnax/iqss-python-intro.git
 
 # build tini
 RUN gpg --keyserver pgp.mit.edu --recv-keys 456032D717A4CD9C && \
