@@ -8,7 +8,7 @@ sudo docker run -d \
     --net=host \
     -e CONFIGPROXY_AUTH_TOKEN=$TOKEN \
     -v /var/run/docker.sock:/docker.sock \
-    jupyter/tmpnb \
+    iqss-tmpnb \
     python orchestrate.py --image='iqss-jupyter-notebook' \
         --pool-size=30 \
         --cpu-quota=50000 \
