@@ -2,7 +2,7 @@
 
 # Start tmpnb service
 export TOKEN=$( head -c 30 /dev/urandom | xxd -p )
-sudo docker run --net=host -d -e CONFIGPROXY_AUTH_TOKEN=$TOKEN --name=proxy jupyter/configurable-http-proxy --default-target http://127.0.0.1:9999
+sudo docker run --net=host -d -e CONFIGPROXY_AUTH_TOKEN=$TOKEN --name=proxy jupyterhub/configurable-http-proxy --default-target http://127.0.0.1:9999
 sleep 10
 sudo docker run -d \
     --net=host \
